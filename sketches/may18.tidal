@@ -1,0 +1,48 @@
+setcps (160/60/4)
+
+p "shaker"
+  $ s "808:10*16"
+  # shape 0.5
+  # squiz (slow 2 $ range 0.25 2 saw)
+  # delay 0.2
+  # delaytime (slow 4 $ saw)
+  # delayfeedback 0.5
+  # gain 0.5
+
+p "drums"
+  $ randslice 8
+  $ n (run 8)
+  # (n "<8 8>" + s "break")
+  # speed 1
+  # unit "c"
+  # shape (slow 2 $ range 0.25 0.75 sine)
+  # delay 0.2
+  # delaytime (1/8)
+  # delayfeedback 0.2
+  # lock 1
+  # gain 0.9
+
+p "arp"
+  $ note "[c e?0.25 g b]!2"
+  # s "superchip"
+  # octave 6
+  # gain 0.65
+  # voice (range 0.1 0.4 rand)
+  # delay 1
+  # delaytime (1/8)
+  # delayfeedback 0.9
+  # lock 1
+  # room 1
+  # size 0.9
+  # dry 0
+
+
+p "chord"
+  $ note "<c'maj e'min>"
+  # s "superchip"
+  # gain 0.6
+  # voice (range 0.1 0.4 rand)
+  # delay 1
+  # delaytime (1/4)
+  # delayfeedback 0.9
+  # lock 1
