@@ -18,8 +18,8 @@ d2
   # gain 1
 
 d3
-  $ sound "<jvbass(1, 8, 3) ~ jvbass(1, 8, 3) ~ jvbass(3, 8)>"
-  # note "c c c"
+  $ sound "<jvbass(1, 8, 2) ~ jvbass(1, 8, 2) ~ jvbass(1, 8, 4) ~ jvbass(3, 8) ~>"
+  # note "c"
   # delay 0.75
   # delaytime (1 / 3.25)
   # delayfeedback (range 0.8 0.9 rand)
@@ -28,11 +28,10 @@ d3
   # room (range 0.5 0.9 rand)
   # size 0.8
   # gain 0.99
-  # silence
 
 d4
   $ sound "supersaw"
-  # note "<c'min e'maj7>"
+  # note "<c'min ~ e'maj7 ~>"
   # octave "4"
   # pitch1 (slow 4 $ range 0.5 5 saw)
   # resonance 0.1
@@ -41,14 +40,9 @@ d4
   # decay (range 0.95 1.0 rand)
   # bandf (slow 2 $ range 250 1500 perlin)
   # bandq (slow 2 $ range 0 0.5 sine)
-  # delay 0.25
+  # delay 0.35
   # delaytime (1 / 3)
   # delayfeedback (range 0.8 0.9 rand)
   # dry (range 0 0.5 perlin)
   # room (range 0.5 0.9 rand)
   # size 0.8
-
-
-p "drums"
-  $ slice 8 "1 2 3 4 5 6 7 8"
-  $ s "break:8"
