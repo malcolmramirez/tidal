@@ -27,7 +27,8 @@ d3
   # dry (range 0 0.5 perlin)
   # room (range 0.5 0.9 rand)
   # size 0.8
-  # gain 0.9
+  # gain 0.99
+  # silence
 
 d4
   $ sound "supersaw"
@@ -46,3 +47,8 @@ d4
   # dry (range 0 0.5 perlin)
   # room (range 0.5 0.9 rand)
   # size 0.8
+
+
+p "drums"
+  $ slice 8 "1 2 3 4 5 6 7 8"
+  $ s "break:8"

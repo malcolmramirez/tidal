@@ -113,11 +113,11 @@ let mod11 = pF "mod11"
 -- Set cps to be a fast house beat
 setcps (180/60/4)
 
-d1 $ sound "bd(3, 8)" # pan (slow 4 saw)
+d1 $ sound "bd(5, 8)" # pan (slow 4 saw)
 
 d2 $ sound "cp(1, 8, 6)" # pan (slow 8 saw)
 
-d3 $ sound "hh(13, 32)" # pan rand # gain (rand / 2 + 0.5)
+d3 $ sound "hh(16, 32)" # pan rand # gain (rand / 2 + 0.5)
 
 d4 $ s "superfm"
     # octave 4
