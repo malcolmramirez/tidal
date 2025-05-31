@@ -24,8 +24,9 @@ d2
 d4
   $ s "cpu:8*4"
   # squiz (slow 4 $ range 1 2 saw)
-  # speed 2
+  # speed 1
   # gain 1
+  # silence
 
 d3
   $ stut 2 0.7 0.125
