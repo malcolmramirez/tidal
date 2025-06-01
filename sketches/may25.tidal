@@ -19,14 +19,13 @@ d1
 d2
   $ slow "1 3 <0.25 5>"
   $ s "cp*4"
-  # gain 0.8
+  # gain 0.9
 
 d4
   $ s "cpu:8*4"
   # squiz (slow 4 $ range 1 2 saw)
   # speed 1
   # gain 1
-  # silence
 
 d3
   $ stut 2 0.7 0.125
