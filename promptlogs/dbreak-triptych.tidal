@@ -1,0 +1,131 @@
+
+let lfofreq = pF "lfofreq"
+    lfodepth = pF "lfodepth"
+    oct = 4
+
+setcps (160/60/4)
+
+-- breaks
+d1
+  -- $ slice 8 ("<1 8> 2 <3 1> <4 3 1> <5 2 4> <6 4 2> 7 <2 8 4>")
+  $ slice 16 ("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 <16 15>")
+  $ s "break:4"
+  # speed 1
+  # unit "c"
+  # delay 0.1
+  # delaytime (1 / 3)
+  # delayfeedback (range 0.8 0.9 rand)
+  # gain 1
+
+d1
+  $ slice 16 ("1 2 3 4 <5 6 2> 6 7 8 9 10 <11 13> 12 <13 11> 14 <15 4 14> <16 1>")
+  $ s "break:6"
+  # speed "2"
+  # unit "c"
+  # gain 1
+
+d1
+  $ sound "{cpu:8(5, 16), cpu:3(2, 16, 4), cpu:4(11, 16), cpu:1(3, 16)}"
+  # delay 0.1
+  # delaytime (1 / 8)
+  # delayfeedback (range 0.8 0.9 rand)
+  # xsdelay (slow 4 $ sine)
+  # tsdelay (slow 4 $ cosine)
+  # vowel "p p <a p> <p o> u <p e p p o>"
+  # gain 1
+
+-- shaker
+d4
+  $ s "808:10*16"
+  # shape 0.5
+  # squiz (slow 2 $ range 0.25 2 saw)
+  # delay 0.2
+  # delaytime (slow 4 $ saw)
+  # delayfeedback 0.5
+  # gain 0.5
+
+-- resonant perc
+d3
+  $ fast 4
+  $ note "d'min d'min7 b4'dom7 e'maj"
+  # sound "supersaw"
+  # octave "<4 5 4 4 5>"
+  # resonancebus 2 (slow 8 $ segment 64 $ range 0 1 sine)
+  # voice 1
+  # decay 1
+  # gain 0.9
+
+-- lead 2
+d2
+  $ fast "4 2 <4 2> <2 4>"
+  $ note "a a <d a> <a e a>"
+  # s "superpwm"
+  # octave 5
+  # semitone 7
+  # rate 0.05
+  # lfo (range 0.5 10 rand)
+  # voicebus 5 (segment 32 $ range 0.25 0.5 perlin)
+  # resonance 0.8
+  # decaybus 6 (segment 64 $ range 0.15 0.75 rand)
+  # delayrecv 6
+  # delaytimerecv 6
+  # room 1
+  # size (range 0.95 0.995 rand)
+  # dry 0
+  # lpf 1500
+  # hpf 250
+  # gain 0.75
+
+-- glue pad
+d6
+  $ slow "8"
+  $ note "d'min b'maj f'min a4'min7"
+  # s "superpwm"
+  # octave 6
+  # rate (160/60/4)
+  # lfo 0.1
+  # voice 1
+  # room 0.5
+  # size (range 0.95 0.995 rand)
+  # dry 0
+  # hpf 350
+  # lpf 500
+  # gain 0.75
+
+-- seq
+oct = 4
+
+d5
+  $ fast 4
+  $ (
+    note $ unwrap(
+    fmap(["d e f <~ b ~ d6 ~ c>", "c e g <~ b ~ c6 ~ d>", "~ d"]!!)
+    $ markovPat 4 0 [
+        [3/4, 1/8, 1/8],
+        [1/8, 3/4, 1/8],
+        [1/3, 1/3, 1/3]
+      ]
+    )
+  )
+  # s "superfm"
+  # octave oct
+  # fmfeedback (fast 2 $ sine)
+  # fmamps [1, 1, 1, 0.5, 0.5, 0.25]
+  # fmratios [1, 0.5, 1, 0.25, 0.25, "<1 2 0.25>"]
+  # fmmod 1 1 "<0 1.25>"
+  # fmmod 1 2 (range 0 4 (fast 4 $ sine))
+  # fmmod 1 3 (range 0 4 (fast 3 $ saw))
+  # fmmod 3 2 (range 0 3 (fast 2 $ sine))
+  # fmeglevels 1 [1, 0.5, 0, 0, 0, 0.5]
+  # fmegrates 1 [10, 0.1, 0.1, 1, 0, 0]
+  # fmeglevels 2 [1, 0, 0, 0, 0, 0]
+  # fmegrates 2 [1, 0.3, 0.7, 1, 0, 0]
+  # fmeglevels 3 [1, 0.2, 0, 1, 0, 0]
+  # fmegrates 3 [10, 0.5, 0.4, 1, 0, 0.5]
+  # hpf ((oct - 1) * (slow 16 $ range 100 200 sine))
+  # lpfbus 3 (segment 64 $ range 500 2500 perlin)
+  # lpq (range 0.1 0.3 sine)
+  # room 0.3
+  # sizebus 4 (slow "<8 16>" $ segment 64 $ range 0.9 1 sine)
+  # dry 0.25
+  # gain 1
