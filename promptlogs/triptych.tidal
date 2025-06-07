@@ -5,7 +5,7 @@ let lfofreq = pF "lfofreq"
 setcps (160/60/4)
 
 -- breaks
-d1
+clutch 7
   -- $ slice 8 ("<1 8> 2 <3 1> <4 3 1> <5 2 4> <6 4 2> 7 <2 8 4>")
   $ slice 16 ("1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 <16 15>")
   $ s "break:4"
@@ -14,16 +14,16 @@ d1
   # delay 0.1
   # delaytime (1 / 3)
   # delayfeedback (range 0.8 0.9 rand)
-  # gain 1
+  # gain 0.8
 
-d8
+clutch 7
   $ slice 16 ("1 2 3 4 <5 6 2> 6 7 8 9 10 <11 13> 12 <13 11> 14 <15 4 14> <16 1>")
   $ s "break:13"
   # speed "2"
   # unit "c"
-  # gain 1
+  # gain 0.8
 
-d7
+d8
   $ sound "{cpu:8(5, 16), cpu:3(2, 16, 4), cpu:4(11, 16), cpu:1(3, 16)}"
   # delay 0.1
   # delaytime (1 / 8)
@@ -49,7 +49,7 @@ d3
   # resonancebus 2 (slow 8 $ segment 64 $ range 0 1 sine)
   # voice 1
   # decay 1
-  # gain 0.8
+  # gain 0.72
 
 -- lead 2
 d4
@@ -146,4 +146,4 @@ d6
   # hpf (2 * (slow 16 $ range 100 200 sine))
   # lpfbus 3 (segment 64 $ range 500 2500 perlin)
   # lpq (range 0.1 0.3 sine)
-  # gain 1
+  # gain 1.1
