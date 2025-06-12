@@ -129,7 +129,7 @@ d6
   # lpfbus 3 (segment 64 $ range 500 2500 perlin)
   # lpq (range 0.1 0.3 sine)
   # room 0.3
-  # sizebus 4 (slow "<8 16>" $ segment 64 $ range 0.9 1 sine)
+  # sizebus 4 (slow "<8 16>" $ segment 64 $ range 0.9 0.99 sine)
   # dry 0.25
   # gain 1
 
