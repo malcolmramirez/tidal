@@ -1,28 +1,70 @@
 setcps (180/60/4)
 
 d1
-  $ fast "4 8 <0.5 2> <1 4 6> 3"
-  $ n "1 1/3 1/3 ~ 1 ~ ~ 1/2 ~ ~ 1 ~ ~ ~ 1/4 1/4"
-  # s "bottle"
+  $ n (run 4)
+  # s "bottle(3, 8, 2)"
   # n (irand 8)
-  # speed "4 2 1 0.5"
+  # speed "4 1"
+  # gain 0.9
 
 d2
-  $ randslice 8
-  $ n "1(8, 16)"
-  # s "break"
-  # n (irand 33)
+  $ fast "4"
+  $ s "cpu(4, 16)"
+  # n (irand 29)
   # speed 1
   # unit "c"
   # delay 0.1
-  # delaytime (1 / 3)
+  # delaytime (1 / 4)
   # delayfeedback (range 0.8 0.9 rand)
-  # enhance (slow 4 $ range 0.2 0.8 sine)
+  # release 0.05
+
+d3
+  $ s "cpu:8(5, 16)"
+  # shape (range 0.6 0.7 (sine + isaw))
+  -- # distort (slow 8 $ range 0.1 0.2 (sine + isaw))
+  # gain 0.825
 
 d3
   $ n "1 1/3 1/3 ~ 1 ~ ~ 1/2 ~ ~ 1 ~ ~ ~ 1/4 1/4"
   # s "cpu:8"
   # shape (range 0.6 0.7 (sine + isaw))
+  # gain 0.825
 
 d4
-  $ s "cpu:3(3, 8)"
+  $ s "cpu:3(2, 16, 4)"
+  # gain 0.9
+
+d5
+  $ s "{cpu:3(2, 16, 4), cpu:4(5, 16), cpu:1(11, 16)}"
+  # distort (slow 8 $ range 0.2 0.7 (sine + isaw))
+  # gain 0.85
+
+d6
+  $ slow "4 2 <8 4> 2?"
+  $ note "<c'min d'maj7 f'min c'min>"
+  # s "superfm"
+  # octave 5
+  # fmfeedback (fast 2 $ sine)
+  # fmamps [1, 1, 1, fast 4 sine, fast 4 $ sine, fast 4 $ sine]
+  # fmratios [range 0 1 $ sine | i <- [0..5]]
+  # fmdetunes [range 0 1 $ perlin | i <- [0..5]]
+  # fmmod 1 1 "<0 1.25>"
+  # fmmod 1 2 (range 0 4 (slow 4 sine))
+  # fmmod 1 3 (range 0 4 (slow 4 saw))
+  # fmmod 3 2 (range 0 3 (slow 2 sine))
+  # fmeglevels 1 [1, 0.5, 1, 0, 0, 0]
+  # fmegrates 1 [10, 0.1, 0.1, 1, 0, 0]
+  # fmeglevels 2 [1, 0, 0, 0, 0, 0]
+  # fmegrates 2 [1, 0.3, 0.7, 1, 0, 0]
+  # fmeglevels 3 [1, 0.2, 0, 1, 0, 0]
+  # fmegrates 3 [10, 0.5, 0.4, 1, 0.1, 0.1]
+  # hpf (slow 8 $ range 250 500 sine)
+  # lpf (slow 8 $ range 1000 2500 sine)
+  # lpq (range 0.1 0.3 sine)
+  # delay 1
+  # delaytime (1 / 4)
+  # delayfeedback (3 / 4)
+  # room 0.3
+  # size 0.1
+  # release 0.3
+  # gain 0.7

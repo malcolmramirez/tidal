@@ -309,6 +309,9 @@ let only = (hush >>)
 
     feedbackbus = makeBus "feedback"
     feedbackrecv = makeRecv "feedback"
+
+    lfofreq = pF "lfofreq"
+    lfodepth = pF "lfodepth"
 :}
 
 :{
