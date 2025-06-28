@@ -1,0 +1,82 @@
+setcps(160/60/4)
+
+d1 
+  $ sometimes (ply 4)
+  $ s "bd(5, 8, <0 1 <1 4>>)"
+  # speed "1 <0.5 1 2> <1 2> 2 <4 2 0.5>"
+  # distort (slow 4 $ range 0.05 0.1 sine)
+
+d2 
+  $ n "1(7, 8, 2)" 
+  # sound (wchoose [("cpu:7", 1/8), ("cpu:1", 1/2), ("cpu:0", 3/8)])
+  # delay 0.1 
+  # delayfeedback 0.9 
+  # delaytime (1/32)
+  # gain 0.9 
+  # silence
+ 
+d3
+  $ rarely (ply "<3 2 8 4 5>" . (# note "<c5 c6 c4>") . (# s "{arpy, sd}") . (# gain 0.8))
+  $ s "sd(2, 8, 2)"
+  # delay 0.1 
+  # delayfeedback 0.9 
+  # delaytime (1/32)
+
+d4
+  $ slow 2
+  -- $ sometimes (# squiz 2)
+  $ every 2 (juxBy 0.5 (fast 2) . (rev))
+  $ n "<1*32 1(30, 32) 1(27, 32)>"
+  # note "<cs'min7 d'min a'maj7 b'min>"
+  # sound "supersaw"
+  # octave "<4 5 <3 4> <4 5>>"
+  # voice (range (-1) 1 sine) 
+  -- # octerbus 6 (segment 64 $ sine)
+  # lfobus 3 (segment 128 $ sine)
+  # lfofreq ((160/60/4) / (1 + irand 4))
+  # gain 1
+  # bpf 3000
+  # orbit 5
+  # silence
+
+d5
+  $ fast 8
+  $ juxBy (slow "<1 1 2 4 0.5 1 0.25>" $ sine) (rev . (# triode 0.1))
+  $ randslice 8
+  $ s "break:3" 
+  # unit "c"
+  # speed 0.5
+  # gain "<0.65 0.7 0.55 0.6>"
+
+d6
+  $ fast 2
+  $ every 2 (juxBy (fast 4 $ rand) (fast "<2 0.5 4 2>") . (rev))
+  $ note "<<c*8 d*8> <a*4 e*8> <c(5, 8) b*2 d(7, 8)>>"
+  # octave "<<4 <3 5> 4> <5 3 <4 5>>>" 
+  # sound "superhammond"
+  # voice (irand 9)
+  # decay (range 0.1 0.5 sine)
+  # legato 0.9
+  # size 0.9
+  # room 0.99
+  # drybus 10 (slow 4 $ segment 32 $ range 0.25 1 sine)
+  # accelerate "<0 0 0 0 0 0 0 <1 0>>"
+  # real (slow 4 $ range 0 0.5 sine)
+  # imag (slow 2 $ range (-0.5) 0.5 saw)
+  # lpf (slow 2 $ range 100 5000 sine)
+  # shape 0.25
+
+d7
+  $ slow 4
+  $ s "superfm"
+  # fmamps [1, 1, 0, 0, 0, 0]
+  # fmegrates 1 [1/8, 1/2, 1/3, 1/4, 1/8, 1/16]
+  # mod11bus 1 (slow 4 $ segment 64 $ range 0 1 (sine + perlin))
+  # mod12bus 2 (fast 4 $ segment 64 $ sine)
+  # mod13bus 3 (segment 64 $ rand)
+  # mod14bus 4 (segment 64 $ perlin)
+  # fmegrates 2 [1/16, 1/16, 1, 2, 4, 1/16]
+  # mod21bus 5 (fast 4 $ segment 64 $ range 0 1 (sine + perlin))
+  # note "<c'min>"
+  # octave "<4 4 4 5>"
+  # gain 1

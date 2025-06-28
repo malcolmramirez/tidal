@@ -1,0 +1,30 @@
+setcps (150/60/4)
+
+d1
+  $ s "808bd*4"
+  # n (irand 33)
+  # hpf 100
+  # hpq (slow 4 $ range 0 0.1 sine)
+  # gain 1
+
+d2
+  $ s "<bass1(11, 16) bass1(13, 16) bass1(10, 16)>"
+  # n (irand 30)
+  # lpf 200
+  # release 0.15
+  # gain 0.75
+
+d3
+  $ n "1*16"
+  # (fast 4 $ (irand 10) # s "electro1")
+  # hpf 1500
+  # hpq (slow 4 $ range 0 0.25 sine)
+  # enhance (slow 4 $ range 0 0.99 sine)
+  # release 0.05
+  # delay 0.1
+  # delaytime (1 / 8)
+  # delayfeedback (slow 4 $ range 0.3 0.8 sine)
+  # room 0.5
+  # size 0.05
+  # dry (slow 4 $ sine)
+  # gain 0.5
