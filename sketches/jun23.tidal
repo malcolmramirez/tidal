@@ -1,43 +1,34 @@
 setcps(160/60/4)
 
-d1 
-  $ sometimes (ply 4)
-  $ s "bd(5, 8, <0 1 <1 4>>)"
-  # speed "1 <0.5 1 2> <1 2> 2 <4 2 0.5>"
-  # distort (slow 4 $ range 0.05 0.1 sine)
 
-d2 
-  $ n "1(7, 8, 2)" 
-  # sound (wchoose [("cpu:7", 1/8), ("cpu:1", 1/2), ("cpu:0", 3/8)])
-  # delay 0.1 
-  # delayfeedback 0.9 
-  # delaytime (1/32)
-  # gain 0.9 
-  # silence
- 
-d3
-  $ rarely (ply "<3 2 8 4 5>" . (# note "<c5 c6 c4>") . (# s "{arpy, sd}") . (# gain 0.8))
-  $ s "sd(2, 8, 2)"
-  # delay 0.1 
-  # delayfeedback 0.9 
-  # delaytime (1/32)
-
-d4
-  $ slow 2
-  -- $ sometimes (# squiz 2)
-  $ every 2 (juxBy 0.5 (fast 2) . (rev))
-  $ n "<1*32 1(30, 32) 1(27, 32)>"
-  # note "<cs'min7 d'min a'maj7 b'min>"
-  # sound "supersaw"
-  # octave "<4 5 <3 4> <4 5>>"
-  # voice (range (-1) 1 sine) 
-  -- # octerbus 6 (segment 64 $ sine)
-  # lfobus 3 (segment 128 $ sine)
-  # lfofreq ((160/60/4) / (1 + irand 4))
-  # gain 1
-  # bpf 3000
-  # orbit 5
-  # silence
+do 
+  let drumPhases = [0, 0] :: [Int]
+  let d1m = if (drumPhases!!0) == 0 
+            then (sometimes (ply 2)) 
+            else (sometimes (ply 4)) . (# speed "1 <0.5 1 2> <1 2> 2 <4 2 0.5>")
+  let mixer = [0, 0, 0] :: [Pattern Double]
+  d1 
+    $ d1m
+    $ s "bd(5, 8, <0 1 <1 4>>)"
+    # distort (slow 4 $ range 0.05 0.1 sine)
+    # gain (mixer!!0)
+  d2 
+    $ n "1(7, 8, 2)" 
+    # sound (wchoose [("cpu:7", 1/8), ("cpu:1", 1/2), ("cpu:0", 3/8)])
+    # delay 0.1 
+    # delayfeedback 0.9 
+    # delaytime (1/32)
+    # gain (0.9 * mixer!!1)
+  let d3m = if (drumPhases!!0) == 0 
+            then (id) 
+            else rarely (ply "<3 2 8 4 5>" . (# note "<c5 c6 c4>") . (# s "{arpy, sd}") . (# gain 0.8))
+  d3
+    $ d3m
+    $ s "sd(2, 8, 2)"
+    # delay 0.1 
+    # delayfeedback 0.9 
+    # delaytime (1/32)
+    # gain (mixer!!2)
 
 d5
   $ fast 8
@@ -47,36 +38,41 @@ d5
   # unit "c"
   # speed 0.5
   # gain "<0.65 0.7 0.55 0.6>"
-
-d6
+  
+d5
+  $ randslice 2
   $ fast 2
   $ every 2 (juxBy (fast 4 $ rand) (fast "<2 0.5 4 2>") . (rev))
-  $ note "<<c*8 d*8> <a*4 e*8> <c(5, 8) b*2 d(7, 8)>>"
-  # octave "<<4 <3 5> 4> <5 3 <4 5>>>" 
-  # sound "superhammond"
-  # voice (irand 9)
-  # decay (range 0.1 0.5 sine)
+  $ n "<1(5, 8) 1*8 <1*4 1*2>>"
+  # sound "break:3"
+  # speed "<1 <2 0.75> 1 1.5>"
+  # unit "c"
   # legato 0.9
-  # size 0.9
+  # sizebus 11 (slow 8 $ range 0.5 0.9 sine) 
   # room 0.99
   # drybus 10 (slow 4 $ segment 32 $ range 0.25 1 sine)
   # accelerate "<0 0 0 0 0 0 0 <1 0>>"
   # real (slow 4 $ range 0 0.5 sine)
   # imag (slow 2 $ range (-0.5) 0.5 saw)
-  # lpf (slow 2 $ range 100 5000 sine)
-  # shape 0.25
+  # lpf (slow 2 $ range 5000 7000 sine)
+  # gain 0.95
 
-d7
+d6
   $ slow 4
   $ s "superfm"
   # fmamps [1, 1, 0, 0, 0, 0]
-  # fmegrates 1 [1/8, 1/2, 1/3, 1/4, 1/8, 1/16]
+  # fmegrates 1 [1/8, 1/2, "<0.33 0.66>", 1/4, 1/8, 1/16]
   # mod11bus 1 (slow 4 $ segment 64 $ range 0 1 (sine + perlin))
   # mod12bus 2 (fast 4 $ segment 64 $ sine)
-  # mod13bus 3 (segment 64 $ rand)
-  # mod14bus 4 (segment 64 $ perlin)
-  # fmegrates 2 [1/16, 1/16, 1, 2, 4, 1/16]
+  # mod13bus 3 (segment 64 $ range 0 "<1 3 4>" rand)
+  # mod14bus 4 (segment 64 $ range 0 "<1 2>" perlin)
+  # fmegrates 2 ["<0.25 0.1>", 1/16, 1, 2, 4, 1/16]
   # mod21bus 5 (fast 4 $ segment 64 $ range 0 1 (sine + perlin))
-  # note "<c'min>"
-  # octave "<4 4 4 5>"
-  # gain 1
+  # note "<c'sus2*3 d'min>"
+  # octave "4"
+  # gain 1 
+
+d7 
+  $ s "jvbass(3, 8, 1)" 
+  # note "<[c c c] [c c c] [c c d]>"
+  # octave "5"
