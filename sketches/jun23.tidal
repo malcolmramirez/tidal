@@ -1,8 +1,7 @@
 setcps(160/60/4)
 
-
 do 
-  let drumPhases = [0, 0] :: [Int]
+  let drumPhases = [1, 1] :: [Int]
   let d1m = if (drumPhases!!0) == 0 
             then (sometimes (ply 2)) 
             else (sometimes (ply 4)) . (# speed "1 <0.5 1 2> <1 2> 2 <4 2 0.5>")
@@ -21,7 +20,7 @@ do
     # gain (0.9 * mixer!!1)
   let d3m = if (drumPhases!!0) == 0 
             then (id) 
-            else rarely (ply "<3 2 8 4 5>" . (# note "<c5 c6 c4>") . (# s "{arpy, sd}") . (# gain 0.8))
+            else rarely (ply "<3 2 8 4 5>" . (# note "<c5 c6 c4>") . (# s "{arpy, sd}") . (# gain (mixer!!2) * 0.8))
   d3
     $ d3m
     $ s "sd(2, 8, 2)"
@@ -55,7 +54,8 @@ d5
   # real (slow 4 $ range 0 0.5 sine)
   # imag (slow 2 $ range (-0.5) 0.5 saw)
   # lpf (slow 2 $ range 5000 7000 sine)
-  # gain 0.95
+  # gain 0.9
+  # silence
 
 d6
   $ slow 4
@@ -73,6 +73,7 @@ d6
   # gain 1 
 
 d7 
-  $ s "jvbass(3, 8, 1)" 
-  # note "<[c c c] [c c c] [c c d]>"
+  $ rarely ((ply 2) . (# octave "6") . (# delay 0.25) . (# delaytime (1/8)) . (# delayfeedback 0.9) . (# gain 0.9))
+  $ note "c(5, 8)"
+  # s "jvbass"
   # octave "5"
