@@ -1,0 +1,34 @@
+setcps(170/60/4)
+
+d1 
+  $ hurry "0.5"
+  $ splice 16 "1 2 3 4 5 6 <7 8 7> 8 9 <10 10*4 12> 11 12 13 14 15 <16 1>"
+  $ s "break:9"
+  # unit "c"
+  # shape 0.2
+
+d2
+  $ fast 8
+  $ note "<c'min c> f <d d'min> fs"
+  # s "superhoover"
+  -- # voicbus 1 (fast 4 $ segment 32 $ range 0.25 0.75 sine)
+  # decay (range 0.05 1 saw)
+  # delay 0.25
+  # delaytime (1/4)
+  # delayfeedback 0.8
+  # room 0.9
+  # size 0.9
+  # bpfbus 3 (slow 8 $ range 100 2000 $ segment 64 $ sine)
+  # bpqbus 2 (slow 3 $ segment 32 $ range 0 0.25 saw)
+  # dry (slow 16 $ range 0 1 sine)
+
+
+d3 $ s "cp ~ ~ ~ <~ ~ sd*4> ~" # silence
+
+d4 
+  $ s "cpu:8(5, 16, 2)"
+  # shape 0.25
+  # lpf 100
+  # silence
+
+
