@@ -1,47 +1,59 @@
 setcps(170/60/4)
 
-d1 
-  $ hurry "0.5"
-  $ splice 16 "1 2 3 4 5 6 <7 8 7> 8 9 <10 10*4 12> 11 12 13 14 15 <16 1>"
-  $ s "break:9"
-  # unit "c"
-  # shape 0.2
-
 do
-let notes = [
-        "<c'min c> f <d d'min> fs", 
-        "<ds'maj ds> e <b b'min> es",
-        "ds",
-        "<ds'min7 ds ds f'maj>",
-        "f'maj7"]
-    ni = 0
-d2
-  $ fast 8
-  $ note (notes!!ni)
-  # s "superhoover"
-  # decay (range 0.05 1 saw)
-  # delay 0.25
-  # delaytime (1/4)
-  # delayfeedback 0.8
-  # room 0.9
-  # size 0.9
-  # bpfbus 3 (slow 8 $ range 100 2000 $ segment 64 $ sine)
-  # bpqbus 2 (slow 3 $ segment 32 $ range 0 0.25 saw)
-  # dry (slow 16 $ range 0 1 sine)
+  let splits = [
+        "1 2 3 4 5 6 <7 8 7> 8 9 <10 10*4 12> 11 12 13 14 15 <16 1>",
+        "9*16",
+        "<1*4 16 1 [16 1]> 2 3 4 5 6 7 8 9 10 <4 11> 12 13 14 15 <16 16 16 3>",
+        "1 2 3 <4 4 4*4> <5 5 16> 6 7 8 9 10 11 12 13 <14 4> <15 5> <16 6>"]
+    si = 0
+  d1
+    $ hurry "0.5"
+    $ slice 16 (splits!!si) 
+    $ s "break:9"
+    # unit "c"
+    # shape 0.2
+  let notes = [
+          "<f'maj7 ds'min7>",
+          "{<f'maj7 ds'min7>, <[f6 a6 c6 e6]*16 [ds6 fs6 as6 cs6]*16>}",
+          "<[e'min7 <e'min7*32 e'min7*16>] [bf'maj7 <bf'maj7*16 bf'maj7*32>]>",
+          "{<[e'min7 <e'min7*32 e'min7*16>] [bf'maj7 <bf'maj7*16 bf'maj7*32>]>, [<[e6 g6 b6 d6]*8 ~> <~ [bf6 d6 f6 a6]*8>]}"]
+      samplegains = 0 -- 0.8
+      padgain = 0.9 -- 0.9
+      phase = 0
+  d2
+    $ slow 8
+    $ note (notes!!phase)
+    # s "superhoover"
+    # decay (range 0.05 0.5 saw)
+    # delay 0.25
+    # delaytime (1/4)
+    # delayfeedback 0.8
+    # room 0.9
+    # size 0.9
+    # bpfbus 3 (slow 8 $ range 750 2000 $ segment 64 $ sine)
+    # bpqbus 2 (slow 3 $ segment 32 $ range 0 0.25 saw)
+    # drybus 4 (slow 16 $ segment 128 $ sine)
+    # gain padgain
+  d3
+    $ slow 8
+    $ s "<~ [~ ~ fm:11]>"
+    # delay 0.75
+    # delaytime (1/4)
+    # delayfeedback 0.8
+    # room 0.9
+    # size 0.9
+    # lpf 1000
+    # gain samplegains
+  d4
+    $ slow 8
+    $ slice 4 "<0 1>"
+    $ s "fm:0"
+    # delay 0.75
+    # delaytime (1/4)
+    # delayfeedback 0.8
+    # room 0.9
+    # size 0.9
+    # lpf 1000
+    # gain samplegains * (0.9375)
 
-d3
-  $ fast 2
-  $ n "1 ~ ~ 1 ~ ~ 1 1"
-  # s "cpu:8"
-  # shape 0.5
-  # silence
-
-d4
-  $ s "cp(2, 8, 2)"
-
-d5
-  $ s "hh*16"
-
-d6
-  $ s "~ ~ ~ sd sd ~ ~ sd"
-  # gain "~ ~ ~ 0.7 0.9 ~ ~ 0.74"
