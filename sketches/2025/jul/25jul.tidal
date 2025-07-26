@@ -1,0 +1,45 @@
+setcps(60/60/4)
+
+let fm = 
+      s "superfm"
+        # octave 5
+        # fmamps [1, 1, 0, 0.5, 0.25, 0]
+        # fmratios [1, 0.33, 1, 0.5, 2, 0]
+        # fmegrates 1 [0.5, 0.25, 0.25, 0.25, 0.25, 0.5]
+        # fmegrates 2 [0.25, 0.5, 0.75, 0.01, 0.5, 0.25]
+        # fmmods 1 [(range 0.5 1 rand) | i <- [0..5]]
+        # fmmods 2 [(range 0 0.5 isaw) | i <- [0..5]]
+        # fmmods 4 [0.05, 0.1, 0.1, 0.1, 0.05, 0.01, 0.1]
+        # room 0.9
+        # size 0.9
+        # dry 0.75
+        # gain 0.9
+    notes = 
+       [  
+         ("p1", (note "d'sus4" # fm)),
+         ("p2", (note "fs'sus4" # fm)),
+         ("p3", (note "ds'sus4" # fm)),
+         ("p4", (note "e'sus2" # fm))
+       ]
+    fx = 
+       [
+         ("m4", (# fmmods 5 [fast (irand 4) $ saw | i <- [0..5]])),
+         ("sc", (juxBy 0.5 (# scram 0.1))),
+         ("a", ((fast 16) . (arp "up")) . (# octave 6) . (# gain 0.7) . (# pan (slow 2 $ range 0 1 sine)))
+       ]
+in
+d1 
+  $ slow 4 
+  -- $ ur 1 "p1:sc" notes fx
+  -- $ ur 4 "<p1 p1:sc {p1, p1:a}> <p2 p2 {p2:m4, p2:a}> {p3, p3:a} <p4:m4 {p4, p4:a}>" notes fx
+  $ ur 4 "{p1, p1:a} {p2:sc, p2:a} {p3, p3:a} {p4:m4, p4:a}" notes fx
+
+d2 
+  $ splice 16 "0 <1 15> <2 1 15> 3 4 5 6 7 8 9 10 11 12 13 14 15"
+  $ hurry 4 
+  $ s "break:4"
+  # crush 8
+  # shape 0.35
+  # room 0.9
+  # size 0.9
+  # dry 0.5
