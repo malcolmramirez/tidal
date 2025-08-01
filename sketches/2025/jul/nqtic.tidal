@@ -1,0 +1,52 @@
+setcps(170/60/4)
+
+d1 
+  $ splice 16 "0 1 2 3 4 <5 4 3> 6 7 8 9 10 11 <12 12 [11 12]> 13 14 15"
+  $ s "break:7"
+  # speed 4
+  # gain 0.9
+
+d2 
+  $ sometimes ghost
+  -- $ n "1 ~ ~ 1 ~ ~ ~ 1"
+  $ n "1*4"
+  # s "808bd:7"
+
+d3
+  $ every 3 ghost
+  -- $ slice 16 "<4 [4 [~ <4 ~ 4> <~ 4> ~]]>"
+  $ slice 16 "~ ~ <5 [2 4]> ~"
+  $ s "break:1"
+  # speed 4
+  # hpf "2000"
+  # gain 0.85
+
+let pat = 
+          octave "3"
+            # semitone "5"
+            # s "superpwm"
+            # decay 0.5
+            # resonance 0.2
+            # krush 0.5
+            # kcutoff 300
+            # pitch1 0.5
+            -- # lpf 2000
+            -- # hpf 200
+            # room 0.99
+            # size 0.25
+            # dry 0 
+            # waveloss 10
+            # gain 0.65
+    gnote (t1, t2) = (t1, slow 4 $ note t2 # pat)
+    notes =  
+           map gnote [ 
+             ("p1", "f'maj7"),
+             ("p2", "b'min7"),
+             ("p3", "a'maj7")
+           ]
+    effex = 
+           [
+             ("a", arp "up" . (ply 8) . (# octave 5) . (# gain 0.67))
+           ]
+in
+d4 $ ur 4 "<{p1, p1:a} {p2, p2:a} {p3, p3:a}>" notes effex
